@@ -1,0 +1,11 @@
+#Author : victorfrk
+
+#environments/devops-operations/inventory
+
+#--
+[local]
+localhost                       ansible_connection="local"
+
+
+[my_available_vms]
+192.168.56.123
