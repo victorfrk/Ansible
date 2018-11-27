@@ -1,0 +1,126 @@
+
+# Author : victorfrk
+# Version : 1.0.0
+# Updated : 27-Nov-2018
+
+#environments/000_cross_env_vars
+
+
+#--
+##################################################################################################
+##                            Client Level Configuration Management                             ##
+##################################################################################################
+
+## Project Information
+# Operating Groups:
+# - cmt:
+# - fs:  Financial Services
+# - hps:
+# - prt:
+# - rsc:
+og:                          fs
+
+## Business Units:
+# - victorfrk: Victor A.
+bu:                          victorfrk
+
+## Locations:
+# - bra: Brazil
+# - :
+# - :
+# - :
+# - :
+loc:                         bra
+
+
+
+##################################################################################################
+##                         Environments Level Configuration Management                          ##
+##################################################################################################
+
+## Environment Connection
+ansible_connection:          ssh
+ansible_user:                "{{ vault_ansible_user }}"
+ansible_specified_user:      "{{ vault_ansible_specified_user }}"
+#ansible_password:            "{{ vault_ansible_password }}"
+ansible_become_pass:         "{{ vault_ansible_become_pass }}"
+
+
+## Node Information
+ip:                          "{{ ansible_default_ipv4.address }}"     
+node_hostname:               "{{ ansible_hostname }}"
+
+
+## Software Version
+docker_ce_vrs:               18.03.0.ce-1.el7.centos
+ansible_vrs:                 latest
+gitlab_vrs:                  10.4.2-ce.0
+en_filebeat_vrs:             6.4.1
+en_logstash_vrs:             6.4.1
+en_elasticsearch_vrs:        6.4.1
+#haproxy_service:             haproxy-main
+postgresql_vrs:              "9.6.2-alpine"
+redis_vrs:                   "3.0.7-alpine"
+java:                        #Java 1.10
+  version:                   10.0.2+13
+  key:                       19aef61b38124481863b1413dce1855f
+  package:                   jdk-10.0.2_linux-x64_bin.rpm
+#java:                        #Java 1.10
+#  version:                   10.0.1+10
+#  key:                       fb4372174a714e6b8c52526dc134031e
+#  package:                   jdk-10.0.1_linux-x64_bin.rpm
+#java:                        #Java 1.9
+#  version:                   9.0.1+10
+#  key:                       fb4372174a714e6b8c52526dc134031e
+#java:                        #Java 1.8
+#  version:                   8u171-b11
+#  key:                       512cd62ec5174c3487ac17c61aaa89e8
+#  package#:                  jdk-8u171-linux-x64.rpm
+
+
+## Container Operations
+restart_policy:              on-failure
+restart_delay:               5s
+restart_max_attempts:        5
+restart_window:              120s
+docker_home:                 /local/docker
+
+
+## Services IP Addresses
+azure_access_key:            "{{ vault_azure_access_key }}"
+azure_storage_endpoint:      "{{ vault_azure_storage_endpoint }}"
+azure_nfs_username:          "{{ vault_azure_nfs_username }}"
+azure_nfs_password:          "{{ vault_azure_nfs_password }}"
+ldap_server_private_ip:      "{{ vault_ldap_private_ip }}"
+ldap_server_password:        "{{ vault_ldap_server_password }}"
+env_timezone:                "America/Sao_Paulo"  # ['UTC','America/Sao_Paulo']
+en_azure_smtp_server:        smtp.mysmtp.net
+en_azure_smtp_user:          "myazurestmpuser"
+en_azure_smtp_pass:          "myazuresmtppassword"
+
+
+## Backup Operations
+disaster_rec_loc_01:         "devarchdisaster01"
+disaster_rec_loc_02:         "devarchdisaster02"
+general_backup_minute:       00
+general_backup_hour:         01
+
+
+
+##################################################################################################
+##                         Applications Level Configuration Management                          ##
+##################################################################################################
+
+## GitLab High Level Setup
+#gitlab_external_url:         "http://{{ hostvars['node_source_code']['ec2_public_dns_name'] }}:80"
+gitlab_external_url:         "http://{{ ansible_default_ipv4.address }}:80"
+gitlab_ldap_enabled:         'true'     # [true;false]
+gitlab_log_level:            'DEBUG'  # ['INFO';'DEBUG']
+gitlab_postgres_db:          "{{ vault_gitlab_postgres_db }}"
+gitlab_postgres_user:        "{{ vault_gitlab_postgres_user }}"
+gitlab_postgres_password:    "{{ vault_gitlab_postgres_password }}"
+gitlab_backup_minute:        "{{ general_backup_minute }}"
+gitlab_backup_hour:          "{{ general_backup_hour }}"
+
+ip_old: "{{ ansible_default_ipv4.address }}"
+ip_new: "{{ ansible_eth0['ipv4']['address'] }}"
